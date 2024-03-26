@@ -54,10 +54,13 @@ class ProductController extends Controller
      */
     public function sendWpMessage(Request $request): \Illuminate\Http\JsonResponse
     {
+
+        return $request->all();
+
         return response()->json([
            'status' => true,
            'message' => 'Send Success',
-           'data' => "This is response data"
+           'data' => $request->all(),
         ],200);
     }
 }
