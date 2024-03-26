@@ -60,19 +60,17 @@ class ProductController extends Controller
     /**
      * Send whatsapp message here.
      */
-    public function sendWpMessage(Request $request): array
+    public function sendWpMessage(Request $request)
     {
-        //$data = $request->all();
-        //$whatsapNumber = $data['user']['visitor']['phone'][0];
+        $data = $request->all();
+        $whatsapNumber = $data['user']['visitor']['phone'][0];
 
-        $response = self::$apiService->sendSmsInWhatsapp($request->phone);
-
-        return $response;
+        $response = self::$apiService->sendSmsInWhatsapp($whatsapNumber);
 
         return response()->json([
            'status' => true,
            'message' => 'Send Success',
-           'data' => $request->all(),
+           'data' => $response
         ],200);
     }
 }
