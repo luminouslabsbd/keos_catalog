@@ -22,7 +22,7 @@ class VerifySecretMiddleware
         }else{
             return response()->json([
                 'status' => false,
-                'message' => 'Invalid Secret Key'
+                'message' => 'Invalid secret key'
             ],403);
         }
     }
