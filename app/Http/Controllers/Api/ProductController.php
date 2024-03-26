@@ -56,7 +56,7 @@ class ProductController extends Controller
     {
 
         $data = $request->all();
-        return $data['user']['visitor'];
+        return $data['user']['visitor']['phone'][0];
 
 
         return response()->json([
