@@ -14,7 +14,7 @@ class ApiService
         $data = array(
             'channel' => 'WhatsApp',
             'source' => '573022177303',
-            'destination' => $data['phoneNumber'],
+            'destination' => $data->phoneNumber,
             'message' => json_encode(array(
                 'type' => 'product_details',
                 'subType' => 'product',
