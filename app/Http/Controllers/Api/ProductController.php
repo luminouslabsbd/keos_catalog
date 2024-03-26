@@ -5,10 +5,18 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Service\ApiService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    public static $apiService;
+
+    public function __construct(ApiService $apiService)
+    {
+        self::$apiService = $apiService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -54,10 +62,12 @@ class ProductController extends Controller
      */
     public function sendWpMessage(Request $request): array
     {
-
         $data = $request->all();
-        return $data['user']['visitor']['phone'][0];
+        $whatsapNumber = $data['user']['visitor']['phone'][0];
 
+        $response = self::$apiService->sendSmsInWhatsapp($whatsapNumber);
+
+        return $response;
 
         return response()->json([
            'status' => true,
