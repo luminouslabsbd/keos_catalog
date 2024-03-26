@@ -52,7 +52,7 @@ class ProductController extends Controller
     /**
      * Send whatsapp message here.
      */
-    public function sendWpMessage(Request $request): \Illuminate\Http\JsonResponse
+    public function sendWpMessage(Request $request): array
     {
 
         return $request->all();
