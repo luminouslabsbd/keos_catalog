@@ -55,7 +55,9 @@ class ProductController extends Controller
     public function sendWpMessage(Request $request): array
     {
 
-        return $request->all();
+        $data = $request->all();
+        return $data['user'];
+
 
         return response()->json([
            'status' => true,
