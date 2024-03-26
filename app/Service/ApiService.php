@@ -6,61 +6,60 @@ class ApiService
 {
     public function sendSmsInWhatsapp($data)
     {
-        // Ensure that phone number is provided
-        if (!isset($data)) {
-            return "Error: Phone number is missing.";
-        }
 
-        // Prepare the message data
-        $messageData = array(
-            'type' => 'product_details',
-            'subType' => 'product',
-            'catalogId' => '2676589475826894',
-            'productId' => '1',
-            'body' => array(
-                'text' => 'body content!'
-            ),
-            'footer' => array(
-                'text' => 'footer content!'
-            )
-        );
+// API endpoint URL
+        $url = "https://api.gupshup.io/sm/api/v1/msg";
 
-        // Prepare the request data
-        $url = 'https://api.gupshup.io/sm/api/v1/msg';
-        $headers = array(
-            'Content-Type: application/x-www-form-urlencoded',
-            'apikey: cky6px6gylnajx0epf1xafnxqluh8lyh'
-        );
-        $postData = array(
+// API key
+        $apiKey = "cky6px6gylnajx0epf1xafnxqluh8lyh";
+
+// Data to be sent
+        $data = array(
             'channel' => 'WhatsApp',
             'source' => '573022177303',
             'destination' => $data,
-            'message' => json_encode($messageData),
+            'message' => json_encode(array(
+                "type" => "product_details",
+                "subType" => "product",
+                "catalogId" => "2676589475826894",
+                "productId" => "xesw76jin3",
+                "body" => array(
+                    "text" => "body content!"
+                ),
+                "footer" => array(
+                    "text" => "footer content!"
+                )
+            )),
             'src.name' => 'CoKeos4App'
         );
 
-        // Send the request
+        return $data;
+
+// Initialize cURL
         $ch = curl_init($url);
+
+// Set cURL options
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/x-www-form-urlencoded',
+            'apikey: ' . $apiKey
+        ));
 
+// Execute the request
         $response = curl_exec($ch);
+
+// Check for errors
+        if(curl_error($ch)) {
+            echo 'Error: ' . curl_error($ch);
+        }
+
+// Close cURL session
         curl_close($ch);
 
-        // Check for errors
-        if ($response === false) {
-            return "Error: cURL request failed.";
-        }
-
-        // Check for specific error response
-        $responseData = json_decode($response, true);
-        if (isset($responseData['errors'])) {
-            return "Error: " . $responseData['errors'][0]['message'];
-        }
-
-        return $response;
+// Print the response
+        echo $response;
     }
 
 
