@@ -62,25 +62,25 @@ class ProductController extends Controller
      */
     public function sendWpMessage(Request $request)
     {
-        return $request->header()['secret'];
+        $secret = $request->header()['secret'];
 
-        $data = $request->all();
-        $whatsapNumber = $data['user']['visitor']['phone'][0]['phoneNumber'] ?? null;
-
-        if (! $whatsapNumber){
-            return response()->json([
-                'status' => true,
-                'message' => 'Send Success',
-                'data' => "Whatsapp number cannot found"
-            ],200);
-        }
-
-        $response = self::$apiService->sendSmsInWhatsapp($whatsapNumber);
+//        $data = $request->all();
+//        $whatsapNumber = $data['user']['visitor']['phone'][0]['phoneNumber'] ?? null;
+//
+//        if (! $whatsapNumber){
+//            return response()->json([
+//                'status' => true,
+//                'message' => 'Send Success',
+//                'data' => "Whatsapp number cannot found"
+//            ],200);
+//        }
+//
+//        $response = self::$apiService->sendSmsInWhatsapp($whatsapNumber);
 
         return response()->json([
            'status' => true,
            'message' => 'Send Success',
-           'data' => $response
+           'data' => $secret
         ],200);
     }
 }
