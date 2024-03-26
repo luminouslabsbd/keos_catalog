@@ -13,7 +13,7 @@ class VerifySecretMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next)
     {
         return $secretKey = config('app.api_secret');
         $secret = $request->header()['secret'];
