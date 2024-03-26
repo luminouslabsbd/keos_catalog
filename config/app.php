@@ -123,4 +123,14 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Api Secret Key
+    |--------------------------------------------------------------------------
+    |
+    | The secret key use for external api access
+    |
+    */
+
+    'api_secret'=>env('API_SECRET',null)
 ];
