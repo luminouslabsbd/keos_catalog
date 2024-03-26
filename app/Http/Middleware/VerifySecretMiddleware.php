@@ -17,7 +17,7 @@ class VerifySecretMiddleware
     {
         $secretKey = config('app.api_secret');
         $secret = $request->header()['secret'];
-        if ((!empty($secretKey) && $secretKey) == $secret){
+        if (!empty($secretKey) && $secretKey == $secret){
             return $next($request);
         }else{
             return response()->json([
