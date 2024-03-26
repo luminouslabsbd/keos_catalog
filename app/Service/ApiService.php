@@ -32,9 +32,6 @@ class ApiService
             )),
             'src.name' => 'CoKeos4App'
         );
-
-        return $data;
-
 // Initialize cURL
         $ch = curl_init($url);
 
