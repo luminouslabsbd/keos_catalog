@@ -62,7 +62,6 @@ class ProductController extends Controller
      */
     public function sendWpMessage(Request $request)
     {
-
         $data = $request->all();
         $whatsapNumber = $data['user']['visitor']['phone'][0]['phoneNumber'] ?? null;
 
