@@ -46,4 +46,16 @@ class ProductController extends Controller
     {
         //
     }
+
+    /**
+     * Send whatsapp message here.
+     */
+    public function sendWpMessage(Request $request): \Illuminate\Http\JsonResponse
+    {
+        return response()->json([
+           'status' => true,
+           'message' => 'Send Success',
+           'data' => "This is response data"
+        ],200);
+    }
 }

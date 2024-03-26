@@ -20,7 +20,10 @@ class VerifySecretMiddleware
         if (!empty($secretKey) && $secretKey == $request->header('secret')){
             return $next($request);
         }else{
-            abort(403,"Access denied");
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid Secret Key'
+            ],403);
         }
     }
 }
