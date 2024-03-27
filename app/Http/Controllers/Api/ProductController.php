@@ -22,7 +22,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return ProductResource::collection(Product::all());
+        return ProductResource::collection(Product::simplePaginate(1));
     }
 
     /**
@@ -30,7 +30,19 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        return "Hello World";
+        $i = 50;
+        while ($i){
+            Product::create( [
+                'catalog_id' => 'CAT' . rand(1111,9999),
+                'title' => 'Laptop-'.$i,
+                'description' => 'Powerful laptop for all your computing needs.',
+                'image' => 'https://asia-exstatic-vivofs.vivo.com/PSee2l50xoirPK7y/1695365793586/fd2574975f45b0b23340355de6454465.png',
+                'price' => 999,
+                'stock' => 50,
+                'status' => 'published',
+            ]);
+            $i --;
+        }
     }
 
     /**
