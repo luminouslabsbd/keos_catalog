@@ -29,7 +29,7 @@
             <form action="{{ route('submitDocxInfo') }}" method="post">
                 @csrf
                 <div class="">
-                    <div class="card">
+                    <div class="card mb-4">
                         <div class="card-header p-1">
                             <h5 class="p-0">Assessed Entity</h5>
                         </div>
@@ -84,6 +84,29 @@
                                             </td>
                                         </tr>
                                     @endswitch
+                                @endforeach
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header p-1">
+                            <h5 class="p-0">1.2 Date and Timeframe of Assessment</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                @foreach ( $dateTimeframeAssessment as $key => $value )
+                                        <tr>
+                                            <th>{{$key}}</th>
+                                            <td>
+                                                <input
+                                                    type="{{$value['type']}}"
+                                                    class="form-control form-control-sm no-border"
+                                                    name="{{ $value['name'] }}"
+                                                    id=""
+                                                    placeholder="{{ $key }}" />
+                                            </td>
+                                        </tr>
                                 @endforeach
                             </table>
                         </div>

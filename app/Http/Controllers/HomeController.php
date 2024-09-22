@@ -12,7 +12,6 @@ class HomeController extends Controller
         $data = [
             'title' => 'Dashboard'
         ];
-        flash()->success("Ok kasjdlfjlk");
         return view("pages.dashboard", $data);
     }
 
@@ -30,17 +29,33 @@ class HomeController extends Controller
                 "Contact phone number:" => "CONTRACTPHONENUMBER",
                 "Contact e-mail address:" => "CONTRACTEMAILADDRESS",
                 'Indicate whether a Customized Approach was used:' => 'CUSTOMIZEDAPPROACHWASUSED',
-                'Indicate whether a Compensating Control was used:' => 'COMPENSATIOGCONTROLWASUSED'
-
-
-            ]
+                'Indicate whether a Compensating Control was used:' => 'COMPENSATIOGCONTROLWASUSED',
+            ],
+            'dateTimeframeAssessment' => [
+                'Date of Report:' => [
+                    'name' => 'dateReport',
+                    'type' => 'text',
+                ],
+                'Date assessment began:' => [
+                    'name' => 'dateAssessmentBegan',
+                    'type' => 'date',
+                ],
+                'Date assessment ended:' =>[
+                    'name'=>'dateAssessmentEnded',
+                    'type'=>'date',
+                ],
+                'Identify the date(s) spent onsite at the assessed entity.' => [
+                    'name' => 'IdentifyTheDatesSpent',
+                    'type' => 'date'
+                ]
+            ],
         ];
         return view('pages.docx', $data);
     }
 
     public function submitDocxInfo(Request $request)
     {
-       $requestData = $request->except(['_token']);
+        $requestData = $request->except(['_token']);
         $templateProcessor = new TemplateProcessor(public_path('file.docx'));
 
         foreach ($requestData as $key => $value) {
@@ -48,20 +63,10 @@ class HomeController extends Controller
             $templateProcessor->setValue($key, $defaultValue);
         }
 
-        // $templateProcessor->setValue('COMPANYNAME', 'John Doe');
-        // $templateProcessor->setValue('DOB', '01-01-1996345345');
-        // $templateProcessor->setValue('exam_y', 'Passed'); // Replace $checkboxValue with actual value
-        // $templateProcessor->setValue('MAILLINGADDRESS', 'This is my value');
-        // $templateProcessor->setValue('COMPANYMAINWEBSITE', 'https://www.companywebsite.com');
-
         try {
-            // Define a temporary file path to save the modified document
             $tempFilePath = tempnam(sys_get_temp_dir(), 'PHPWord') . '.docx';
-
-            // Save the modified document to the temporary path
             $templateProcessor->saveAs($tempFilePath);
 
-            // Set headers to trigger download
             header("Content-Description: File Transfer");
             header('Content-Disposition: attachment; filename="modified_template.docx"');
             header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
@@ -71,13 +76,8 @@ class HomeController extends Controller
             header('Pragma: public');
             header('Content-Length: ' . filesize($tempFilePath));
 
-            // Read the file and output it to the browser for download
             readfile($tempFilePath);
-
-            // Delete the temporary file after download
             unlink($tempFilePath);
-
-            flash()->success("Ok kasjdlfjlk");
             return redirect()->back();
         } catch (\PhpOffice\PhpWord\Exception\Exception $e) {
             echo "Error saving document: " . $e->getMessage();
