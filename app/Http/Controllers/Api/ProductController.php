@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Service\ApiService;
+use Exception;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -92,5 +93,65 @@ class ProductController extends Controller
            'message' => 'Send Success',
            'data' => $response
         ],200);
+    }
+
+    public function sendMultiProduct()
+    {
+        $apiKey = 'cky6px6gylnajx0epf1xafnxqluh8lyh';
+        $source = '573022177303';
+        $destination = '8801784124291';
+        $messageData = [
+            'type' => 'product_details',
+            'subType' => 'product_list',
+            'catalogId' => '1598140273855917',
+            'productId' => '',
+            'body' => ['text' => 'body content!'],
+            'header' => ['type' => 'text', 'text' => 'header content!'],
+            'footer' => ['text' => 'footer content!'],
+            'sections' => [
+                [
+                    'title' => '',
+                    'productList' => [
+                        ['productId' => 3],
+                        ['productId' => 4],
+                    ],
+                ],
+            ],
+        ];
+        try {
+            $response = $this->sendGupshupMessage($apiKey, $source, $destination, $messageData);
+            echo 'Response: ' . $response;
+        } catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+    }
+
+    public function sendGupshupMessage($apiKey, $source, $destination, $messageData)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://api.gupshup.io/sm/api/v1/msg');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        $headers = [
+            'apikey: ' . $apiKey,
+            'Content-Type: application/x-www-form-urlencoded',
+        ];
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $postData = http_build_query([
+            'channel' => 'whatsapp',
+            'source' => $source,
+            'destination' => $destination,
+            'src.name' => 'Gersjdn',
+            'message' => json_encode($messageData),
+        ]);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        if ($response === false) {
+            $error = curl_error($ch);
+            curl_close($ch);
+            throw new Exception('cURL error: ' . $error);
+        }
+        curl_close($ch);
+        return $response;
     }
 }
